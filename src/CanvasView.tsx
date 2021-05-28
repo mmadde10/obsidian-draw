@@ -1,26 +1,14 @@
 import { FileView, TFile, ItemView, WorkspaceLeaf } from "obsidian";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import Canvas from "./components/Canvas";
+import SketchCanvas from "./components/SketchCanvas";
 
-export default class CanvasView extends ItemView{
-  
-    constructor(leaf: WorkspaceLeaf) {
-      super(leaf);
-    }
-  
-    getViewType(): string {
-      return "Canvas View";
-    }
-    getDisplayText(): string {
-      return "Canvas"
-    }
-
-    constructCanvas(){
-        ReactDOM.unmountComponentAtNode(this.contentEl);
-        ReactDOM.render(
-            <Canvas/>,
-            this.contentEl
-        )
-    }
-  }
+export default function CanvasView(): JSX.Element{
+  return (
+    <>
+    <div className="CanvasViewContainer">
+      <SketchCanvas></SketchCanvas>
+    </div>
+    </>
+  )
+}

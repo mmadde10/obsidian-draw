@@ -2,6 +2,7 @@ import { App, ItemView, Modal, Notice, Plugin, PluginSettingTab, Setting, Worksp
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import DiceRoller from './components/DiceRoller';
+import ReactView from './ReactView';
 
 interface MyPluginSettings {
 	mySetting: string;
@@ -15,15 +16,14 @@ const VIEW_TYPE = "react-view2";
 
 export default class MyPlugin extends Plugin {
 	settings: MyPluginSettings;
-	private view: MyReactView;
+	private view: ReactView;
 
 	async onload() {
 		console.log('loading plugin');
 
-
 		this.registerView(
 			VIEW_TYPE,
-			(leaf: WorkspaceLeaf) => (this.view = new MyReactView(leaf))
+			(leaf: WorkspaceLeaf) => (this.view = new ReactView(leaf))
 		  );
 
 		this.addCommand({
@@ -42,8 +42,8 @@ export default class MyPlugin extends Plugin {
 		});
 
 		this.addCommand({
-			id: 'app:show-day-planner-timeline',
-			name: 'Show the Day Planner Timeline',
+			id: 'app:open-new-canvas',
+			name: 'Open New Canvas',
 			callback: () => this.initLeaf(),
 			hotkeys: []
 		});
@@ -54,7 +54,6 @@ export default class MyPlugin extends Plugin {
 	//TODO: Change this from a leaf to workspace editor (Figure out what that is)
 	initLeaf() {
 		if (this.app.workspace.getLeavesOfType(VIEW_TYPE).length > 0) {
-			console.log("leafs exist", this.app.workspace.getLeavesOfType(VIEW_TYPE).length)
 		  return;
 		}
 		this.app.workspace.getRightLeaf(false).setViewState({
@@ -75,29 +74,6 @@ export default class MyPlugin extends Plugin {
 	}
 	
 }
-
-class MyReactView extends ItemView {
-	private reactComponent: React.ReactElement;
-  
-	getViewType(): string {
-	  return VIEW_TYPE;
-	}
-  
-	getDisplayText(): string {
-	  return "Dice Roller";
-	}
-  
-	getIcon(): string {
-	  return "calendar-with-checkmark";
-	}
-  
-	async onOpen(): Promise<void> {
-	  this.reactComponent = React.createElement(DiceRoller);
-  
-	  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-	  ReactDOM.render(this.reactComponent, (this as any).contentEl);
-	}
-  }
 
 class SampleModal extends Modal {
 	constructor(app: App) {

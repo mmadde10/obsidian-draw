@@ -19,5 +19,5 @@
   },
   "include": [
     "**/*.ts"
-, "src/components/Canvas.tsx", "src/CanvasView.tsx"  ]
+, "src/components/SketchCanvas.tsx", "src/CanvasView.tsx"  ]
 }
